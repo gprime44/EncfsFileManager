@@ -1,14 +1,14 @@
 import React from 'react'
-import TreeApp from './Tree'
-import TableApp from './Table'
-import NavBarApp from './NavBar'
+import TreeApp from './TreeApp'
+import TableApp from './TableApp'
+import NavBarApp from './NavBarApp'
 
 const App = () => {
   return (
     <div>
-      <NavBarApp />
-      <TreeApp />
-      <TableApp />
+      <NavBarApp/>
+      <TreeApp/>
+      <TableApp/>
     </div>
   )
 }

@@ -1,15 +1,15 @@
-package org.optimus.encfsfilemanager.server.resources;
+package org.optimus.encfsfilemanager.server.resources.api;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.optimus.encfsfilemanager.server.dto.UserDto;
 import org.optimus.encfsfilemanager.server.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,23 +26,18 @@ public class FileResource extends AbstractResource {
 	private FileService fileService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public void get(@RequestParam(required = false, name = "path") String path, //
-			HttpServletResponse response) throws Exception {
+	public ResponseEntity<FileSystemResource> get(@RequestParam(required = true, name = "path") String path) {
 
 		LOGGER.info("User {} get {}", getUser(), path);
 
 		Path file = fileService.getFileInGlobalFolder(path);
 
-		response.addHeader("Content-Length", String.valueOf(Files.size(file)));
-		response.addHeader("Content-Type", Files.probeContentType(file));
-		response.addHeader("Content-Disposition", "inline; filename=\"" + file.getFileName().toString() + "\"");
-
-		Files.copy(file, response.getOutputStream());
-		response.flushBuffer();
+		FileSystemResource fileSystemResource = new FileSystemResource(file.toFile());
+		return new ResponseEntity<>(fileSystemResource, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE)
-	public void delete(@RequestParam("path") String path) throws Exception {
+	public void delete(@RequestParam(required = true, name = "path") String path) throws Exception {
 
 		UserDto user = getUser();
 
@@ -53,10 +48,10 @@ public class FileResource extends AbstractResource {
 			LOGGER.info("User {} can't delete file", user);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public void addFile(@RequestParam("path") String path, //
-			@RequestParam("file") MultipartFile[] files) throws Exception {
+	public void addFile(@RequestParam(required = true, name = "path") String path, //
+			@RequestParam(required = true, name = "file") MultipartFile[] files) throws Exception {
 
 		UserDto user = getUser();
 

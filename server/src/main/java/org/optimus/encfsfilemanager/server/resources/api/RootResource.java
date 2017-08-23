@@ -1,4 +1,4 @@
-package org.optimus.encfsfilemanager.server.resources;
+package org.optimus.encfsfilemanager.server.resources.api;
 
 import org.optimus.encfsfilemanager.server.dto.UserDto;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ public class RootResource extends AbstractResource {
 	private final static Logger LOGGER = LoggerFactory.getLogger(RootResource.class);
 
 	@RequestMapping(method = RequestMethod.GET)
-	public UserDto getContainerStats() throws Exception {
+	public UserDto getContainerStats()  {
 		LOGGER.info("User {} logged", getUser());
 		return getUser();
 	}

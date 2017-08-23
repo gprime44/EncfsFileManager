@@ -10,9 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,59 +61,56 @@ public class FileService extends AbstractService {
 		folderDto.setPath(folder);
 		folderDto.setName(getFolderLabel(folderToScan.getFileName().toString()));
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderToScan)) {
-			for (Path entry : stream) {
-				boolean isLocal = Files.exists(localDecodedPath.resolve(globalRootPath.relativize(entry)));
-				boolean isRemote = Files.exists(remoteRootPath.resolve(globalRootPath.relativize(entry)));
-				STATE state = STATE.REMOTE;
-				if (isLocal) {
-					state = STATE.LOCAL;
-					if (isRemote) {
-						state = STATE.BOTH;
-					}
-				}
-
-				if (Files.isDirectory(entry)) {
-					FolderDto subFolder = new FolderDto();
-					subFolder.setName(getFolderLabel(entry.getFileName().toString()));
-					subFolder.setSize(Files.size(entry));
-					subFolder.setState(state);
-					subFolder.setPath(globalRootPath.relativize(entry).toString());
-					subFolder.setDateUpdate(new Date(Files.getLastModifiedTime(entry).toMillis()));
-					folderDto.getFolders().add(subFolder);
-					folderDto.setSize(folderDto.getSize() + subFolder.getSize());
-
-				} else if (withFile) {
-					FileDto fileDto = new FileDto();
-					fileDto.setName(entry.getFileName().toString());
-					fileDto.setSize(Files.size(entry));
-					fileDto.setState(state);
-					fileDto.setPath(globalRootPath.relativize(entry).toString());
-					fileDto.setDateUpdate(new Date(Files.getLastModifiedTime(entry).toMillis()));
-					folderDto.getFiles().add(fileDto);
-					folderDto.setSize(folderDto.getSize() + fileDto.getSize());
-				}
-			}
-
-			LOGGER.debug("Found {} folders and {} files", folderDto.getFolders().size(), folderDto.getFiles().size());
-
+			stream.forEach((entry) -> getFolderMetadata(withFile, globalRootPath, localDecodedPath, remoteRootPath, folderDto, entry));
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 		}
 
-		Collections.sort(folderDto.getFolders(), new Comparator<FolderDto>() {
+		return folderDto;
+	}
 
-			@Override
-			public int compare(FolderDto o1, FolderDto o2) {
-				return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+	private FolderDto getFolderMetadata(boolean withFile, Path globalRootPath, Path localDecodedPath, Path remoteRootPath, FolderDto folderDto, Path entry) {
+		boolean isLocal = Files.exists(localDecodedPath.resolve(globalRootPath.relativize(entry)));
+		boolean isRemote = Files.exists(remoteRootPath.resolve(globalRootPath.relativize(entry)));
+		STATE state = STATE.REMOTE;
+		if (isLocal) {
+			state = STATE.LOCAL;
+			if (isRemote) {
+				state = STATE.BOTH;
 			}
+		}
+
+		try {
+			if (Files.isDirectory(entry)) {
+				FolderDto subFolder = new FolderDto();
+				subFolder.setName(getFolderLabel(entry.getFileName().toString()));
+				subFolder.setSize(Files.size(entry));
+				subFolder.setState(state);
+				subFolder.setPath(globalRootPath.relativize(entry).toString());
+				subFolder.setDateUpdate(new Date(Files.getLastModifiedTime(entry).toMillis()));
+				folderDto.getFolders().add(subFolder);
+				folderDto.setSize(folderDto.getSize() + subFolder.getSize());
+
+			} else if (withFile) {
+				FileDto fileDto = new FileDto();
+				fileDto.setName(entry.getFileName().toString());
+				fileDto.setSize(Files.size(entry));
+				fileDto.setState(state);
+				fileDto.setPath(globalRootPath.relativize(entry).toString());
+				fileDto.setDateUpdate(new Date(Files.getLastModifiedTime(entry).toMillis()));
+				folderDto.getFiles().add(fileDto);
+				folderDto.setSize(folderDto.getSize() + fileDto.getSize());
+			}
+		} catch (IOException e) {
+			throw new ServiceException("Error to process folder {}", e, entry);
+		}
+
+		folderDto.getFolders().stream().sorted((o1, o2) -> {
+			return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
 		});
 
-		Collections.sort(folderDto.getFiles(), new Comparator<FileDto>() {
-
-			@Override
-			public int compare(FileDto o1, FileDto o2) {
-				return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
-			}
+		folderDto.getFiles().stream().sorted((o1, o2) -> {
+			return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
 		});
 
 		return folderDto;
@@ -189,7 +185,7 @@ public class FileService extends AbstractService {
 
 		Map<String, String> env = new HashMap<>();
 		env.put("ENCFS6_CONFIG", encfsFile);
-		try (OutputStream os = new ByteArrayOutputStream(); InputStream is = new ByteArrayInputStream(encfsPassword.getBytes());) {
+		try (OutputStream os = new ByteArrayOutputStream(); InputStream is = new ByteArrayInputStream(encfsPassword.getBytes())) {
 			DefaultExecutor executor = new DefaultExecutor();
 			ExecuteStreamHandler streamHandler = new PumpStreamHandler(os, os, is);
 			executor.setStreamHandler(streamHandler);
@@ -207,7 +203,7 @@ public class FileService extends AbstractService {
 
 	public void saveFiles(String path, MultipartFile[] files) throws ServiceException {
 		if (ArrayUtils.isNotEmpty(files)) {
-			for (MultipartFile file : files) {
+			Arrays.asList(files).forEach((file) -> {
 				Path destPath = null;
 				try {
 					destPath = getFileInGlobalFolder(path).resolve(file.getOriginalFilename());
@@ -220,7 +216,7 @@ public class FileService extends AbstractService {
 				} catch (IOException e) {
 					throw new ServiceException("Unable to upload file {}", destPath);
 				}
-			}
+			});
 		}
 	}
 
@@ -235,7 +231,6 @@ public class FileService extends AbstractService {
 		}
 
 		if (Files.isDirectory(localDecodedFile)) {
-
 			return "BATCH_MODE";
 
 		} else {
