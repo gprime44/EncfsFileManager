@@ -6,6 +6,7 @@ import org.optimus.encfsfilemanager.server.services.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ public class ContentResource extends AbstractResource {
 	private FileService fileService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public FolderDto getFolderContent(@RequestParam(required = true, name = "path") String path, //
+	public ResponseEntity<FolderDto> getFolderContent(@RequestParam(required = true, name = "path") String path, //
 			@RequestParam("withFile") boolean withFile) {
 
 		LOGGER.info("User {} get folder content {}", getUser(), path);
@@ -30,7 +31,9 @@ public class ContentResource extends AbstractResource {
 			path = StringUtils.EMPTY;
 		}
 
-		return fileService.getFolderContent(path, withFile);
+		FolderDto folderDto = fileService.getFolderContent(path, withFile);
+
+		return ResponseEntity.ok(folderDto);
 	}
 
 }

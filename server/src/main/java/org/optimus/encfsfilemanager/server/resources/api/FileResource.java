@@ -37,20 +37,23 @@ public class FileResource extends AbstractResource {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE)
-	public void delete(@RequestParam(required = true, name = "path") String path) throws Exception {
+	public ResponseEntity<Void> delete(@RequestParam(required = true, name = "path") String path) throws Exception {
 
 		UserDto user = getUser();
 
 		if (user.isAdmin()) {
 			LOGGER.info("User {} delete {}", path);
 			fileService.delete(path);
+			return ResponseEntity.ok().build();
 		} else {
 			LOGGER.info("User {} can't delete file", user);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
+
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void addFile(@RequestParam(required = true, name = "path") String path, //
+	public ResponseEntity<Void> addFile(@RequestParam(required = true, name = "path") String path, //
 			@RequestParam(required = true, name = "file") MultipartFile[] files) throws Exception {
 
 		UserDto user = getUser();
@@ -58,8 +61,10 @@ public class FileResource extends AbstractResource {
 		if (user.isAdmin()) {
 			LOGGER.info("User {} add files to {}", user, path);
 			fileService.saveFiles(path, files);
+			return ResponseEntity.ok().build();
 		} else {
 			LOGGER.info("User {} can't add file", user);
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 	}
 }

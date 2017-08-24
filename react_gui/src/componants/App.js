@@ -6,9 +6,9 @@ import NavBarApp from './NavBarApp'
 const App = () => {
   return (
     <div>
-      <NavBarApp/>
-      <TreeApp/>
-      <TableApp/>
+      <NavBarApp />
+      <TreeApp />
+      <TableApp />
     </div>
   )
 }

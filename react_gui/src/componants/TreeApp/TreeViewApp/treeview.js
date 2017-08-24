@@ -1,20 +1,24 @@
-import React, { PropTypes } from 'react'
-import TreeNodeApp from '../TreeNodeApp'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const TreeViewApp = ({ nodes }) => {
+const TreeViewApp = ({ folder }) => {
   return (
     <ul>
-      {nodes.map(node => (
-        <TreeNodeApp key={node.path} />
-      ))}
+      <li>
+        {folder.name}
+        {folder.folders.map(childFolder => (
+          <TreeViewApp key={childFolder.path} folder={childFolder.path} />
+        ))}
+      </li>
     </ul>
   )
 }
 
 TreeViewApp.propTypes = {
-  nodes: PropTypes.arrayOf(
+  folder: PropTypes.arrayOf(
     PropTypes.shape({
       path: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,
 }

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const SearchApp = ({ placeholder, label }) => {
     return (
@@ -15,7 +16,7 @@ const SearchApp = ({ placeholder, label }) => {
 
 SearchApp.propTypes = {
     placeholder: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
 }
 
 export default SearchApp

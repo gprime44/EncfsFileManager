@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const HomeApp = ({ title }) => {
     return (
@@ -20,7 +21,7 @@ const HomeApp = ({ title }) => {
 }
 
 HomeApp.propTypes = {
-    title: PropTypes.string
+    title: PropTypes.string,
 }
 
 export default HomeApp
