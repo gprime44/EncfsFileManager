@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const TreeViewApp = ({ folder }) => {
+const TreeViewApp = ({ folder, onClick }) => {
   return (
     <ul>
       <li>
@@ -21,6 +21,7 @@ TreeViewApp.propTypes = {
       name: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default TreeViewApp

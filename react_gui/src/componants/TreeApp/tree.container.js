@@ -4,13 +4,14 @@ import { load } from './tree.action'
 
 const mapStateToProps = (state) => {
   return {
-    folders: state.folder,
+    path: state.path,
+    name: state.name,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    load: () => dispatch(load('/')),
+    onClick: () => dispatch(load()),
   }
 }
 

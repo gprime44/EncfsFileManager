@@ -12,6 +12,8 @@ import store from './redux/store'
 import registerServiceWorker from './registerServiceWorker'
 
 render(
-    <Provider store={store}><App /></Provider>, document.getElementById('root'))
+    <Provider store={store}>
+        <App />
+    </Provider>, document.getElementById('root'))
 
 registerServiceWorker()
