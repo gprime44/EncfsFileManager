@@ -6,12 +6,15 @@ const mapStateToProps = (state) => {
   return {
     path: state.path,
     name: state.name,
+    folders: state.folders,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClick: () => dispatch(load()),
+    onClick: () => {
+      dispatch(load())
+    },
   }
 }
 

@@ -1,6 +1,6 @@
 import { ADD_FOLDER } from './tree.action'
 
-const nameInitialState = { path: '', name: '' }
+const nameInitialState = { path: '', name: '', folders: [] }
 const initAction = { type: 'UNKNOWN' }
 
 const tree = (state = nameInitialState, action = initAction) => {

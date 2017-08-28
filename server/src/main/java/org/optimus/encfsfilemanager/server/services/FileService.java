@@ -57,6 +57,8 @@ public class FileService extends AbstractService {
 			throw new ServiceException("{} isn't a folder", folderToScan);
 		}
 
+		LOGGER.debug("Folder to scan {]", folderToScan);
+
 		FolderDto folderDto = new FolderDto();
 		folderDto.setPath(folder);
 		folderDto.setName(getFolderLabel(folderToScan.getFileName().toString()));

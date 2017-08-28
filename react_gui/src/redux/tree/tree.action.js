@@ -10,8 +10,8 @@ export const addFolder = (folder) => {
   }
 }
 
-export const fetchFolder = () => (dispatch) => {
-  fetch(`${API_URL}/content?path=&withFile=false`)
+export const fetchFolder = path => (dispatch) => {
+  fetch(`${API_URL}/content?path=${path}&withFile=false`)
     .then(raw => raw.json())
     .then(folder => dispatch(addFolder(folder)))
 }

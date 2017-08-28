@@ -18,8 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableAsync
 @EnableWebSecurity
-@ComponentScan(basePackages = { "org.optimus.encfsfilemanager.server.resources",
-		"org.optimus.encfsfilemanager.server.services" })
+@ComponentScan(basePackages = { "org.optimus.encfsfilemanager.server.resources", "org.optimus.encfsfilemanager.server.services" })
 public class EncfsFileManagerApplication extends WebSecurityConfigurerAdapter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EncfsFileManagerApplication.class);
@@ -40,8 +39,8 @@ public class EncfsFileManagerApplication extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http //
-				.authorizeRequests().anyRequest().authenticated().and() //
-				.httpBasic().and() //
+				.authorizeRequests().anyRequest().permitAll().and() //
+//				.httpBasic().and() //
 				.headers().frameOptions().sameOrigin().httpStrictTransportSecurity().disable().and() //
 				.csrf().disable();
 	}

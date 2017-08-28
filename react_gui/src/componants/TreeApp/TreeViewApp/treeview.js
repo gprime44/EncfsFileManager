@@ -1,24 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const TreeViewApp = ({ folder, onClick }) => {
+const TreeViewApp = ({ path, name, folders, onClick }) => {
   return (
-    <ul>
-      <li>
-        {folder.name}
-        {folder.folders.map(childFolder => (
-          <TreeViewApp key={childFolder.path} folder={childFolder.path} />
+    <li onClick={onClick}>
+      <label title={path}>{name}</label>
+      <ul>
+        {folders.map(folder => (
+          <TreeViewApp
+            key={folder.path}
+            path={folder.path}
+            name={folder.name}
+            onClick={() => onClick(folder.path)}
+          />
         ))}
-      </li>
-    </ul>
+      </ul>
+    </li>
   )
 }
 
 TreeViewApp.propTypes = {
-  folder: PropTypes.arrayOf(
+  path: PropTypes.func.isRequired,
+  name: PropTypes.func.isRequired,
+  folders: PropTypes.arrayOf(
     PropTypes.shape({
-      path: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
+      path: PropTypes.number.isRequired,
+      name: PropTypes.bool.isRequired,
     }).isRequired,
   ).isRequired,
   onClick: PropTypes.func.isRequired,

@@ -4,13 +4,17 @@ import { load } from './treeview.action'
 
 const mapStateToProps = (state) => {
   return {
-    nodes: state.folder,
+    path: state.path,
+    name: state.name,
+    folders: state.folders,
   }
 }
 
-const mapDispatchToProps = (dispatch, { path }) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    load: () => dispatch(load(path)),
+    onClick: (path) => {
+      dispatch(load(path))
+    },
   }
 }
 
