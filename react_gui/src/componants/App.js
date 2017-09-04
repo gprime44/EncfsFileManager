@@ -7,8 +7,16 @@ const App = () => {
   return (
     <div>
       <NavBarApp />
-      <TreeApp />
-      <TableApp />
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-4">
+            <TreeApp />
+          </div>
+          <div className="col-md-8">
+            <TableApp />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

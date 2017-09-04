@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import SubTreeViewApp from '../TreeViewApp'
 
 const TreeViewApp = ({ path, name, folders, onClick }) => {
   return (
@@ -7,7 +8,7 @@ const TreeViewApp = ({ path, name, folders, onClick }) => {
       <label title={path}>{name}</label>
       <ul>
         {folders.map(folder => (
-          <TreeViewApp
+          <SubTreeViewApp
             key={folder.path}
             path={folder.path}
             name={folder.name}
@@ -20,12 +21,12 @@ const TreeViewApp = ({ path, name, folders, onClick }) => {
 }
 
 TreeViewApp.propTypes = {
-  path: PropTypes.func.isRequired,
-  name: PropTypes.func.isRequired,
+  path: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   folders: PropTypes.arrayOf(
     PropTypes.shape({
-      path: PropTypes.number.isRequired,
-      name: PropTypes.bool.isRequired,
+      path: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,
   onClick: PropTypes.func.isRequired,

@@ -1,17 +1,18 @@
-import { API_URL } from '../constants'
-
-export const ADD_FOLDER = 'ADD_FOLDER'
-export const addFolder = (folder) => {
+export const SET_ROOT = 'SET_ROOT'
+export const setRoot = (folder) => {
+  console.log('SET_ROOT')
   return {
-    type: ADD_FOLDER,
-    name: folder.name,
-    path: folder.path,
-    folders: folder.folders,
+    type: SET_ROOT,
+    data: folder,
   }
 }
 
-export const fetchFolder = path => (dispatch) => {
-  fetch(`${API_URL}/content?path=${path}&withFile=false`)
-    .then(raw => raw.json())
-    .then(folder => dispatch(addFolder(folder)))
+export const ADD_FOLDER = 'ADD_FOLDER'
+export const addFolder = (folder) => {
+  console.log(`ADD_FOLDER ${folder.path}`)
+  return {
+    type: ADD_FOLDER,
+    data: folder,
+  }
 }
+

@@ -15,7 +15,7 @@ const HomeApp = ({ title }) => {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
             </button>
-            <a href="#" className="navbar-brand">{title}</a>
+            <a href="/" className="navbar-brand">{title}</a>
         </div>
     )
 }

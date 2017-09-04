@@ -13,8 +13,6 @@ const TreeApp = ({ path, name, folders, onClick }) => {
                             <TreeViewApp
                                 key={folder.path}
                                 path={folder.path}
-                                name={folder.name}
-                                onClick={() => onClick(folder.path)}
                             />
                         ))}
                     </ul>
@@ -25,14 +23,9 @@ const TreeApp = ({ path, name, folders, onClick }) => {
 }
 
 TreeApp.propTypes = {
-    path: PropTypes.func.isRequired,
-    name: PropTypes.func.isRequired,
-    folders: PropTypes.arrayOf(
-        PropTypes.shape({
-            path: PropTypes.number.isRequired,
-            name: PropTypes.bool.isRequired,
-        }).isRequired,
-    ).isRequired,
+    path: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    folders: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
 }
 

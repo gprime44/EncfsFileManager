@@ -1,5 +1,7 @@
-import { fetchFolder } from '../../../redux/tree'
+import { addFolder } from '../../../redux/tree'
 
-export const load = path => (dispatch) => {
-  dispatch(fetchFolder(path))
+export const fetchFolder = path => (dispatch) => {
+  fetch(`/api/content?path=${path}&withFile=true`)
+    .then(response => response.json())
+    .then(folder => dispatch(addFolder(folder)))
 }

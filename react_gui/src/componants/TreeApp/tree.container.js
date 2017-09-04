@@ -1,19 +1,25 @@
 import { connect } from 'react-redux'
+import pick from 'lodash/pick'
 import component from './tree'
-import { load } from './tree.action'
+import { fetchRoot } from './tree.action'
+import { getByPath } from '../../redux/tree'
 
 const mapStateToProps = (state) => {
+  console.log('mapStateToProps')
+  const rootFolder = getByPath(state, '')
+  console.log(rootFolder)
+  const folderProps = pick(rootFolder, ['path', 'name', 'folders'])
   return {
-    path: state.path,
-    name: state.name,
-    folders: state.folders,
+    ...folderProps,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
+  console.log('mapDispatchToProps')
   return {
     onClick: () => {
-      dispatch(load())
+      console.log('onClick')
+      dispatch(fetchRoot())
     },
   }
 }
