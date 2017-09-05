@@ -2,9 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SubTreeViewApp from '../TreeViewApp'
 
-const TreeViewApp = ({ path, name, folders, onClick }) => {
+const TreeViewApp = ({ path, name, folders, opened = false, onClick }) => {
+  let icon = ''
+  if (opened) icon = 'fa fa-folder-open-o'
+  else icon = 'fa fa-folder-o'
+
   return (
     <li onClick={onClick}>
+      <i className={icon} aria-hidden="true" />
       <label title={path}>{name}</label>
       <ul>
         {folders.map(folder => (
@@ -23,12 +28,8 @@ const TreeViewApp = ({ path, name, folders, onClick }) => {
 TreeViewApp.propTypes = {
   path: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  folders: PropTypes.arrayOf(
-    PropTypes.shape({
-      path: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }).isRequired,
-  ).isRequired,
+  folders: PropTypes.array.isRequired,
+  opened: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

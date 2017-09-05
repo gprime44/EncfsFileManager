@@ -8,11 +8,13 @@ const TableApp = ({ path, name, folders, files }) => {
         <table className="table table-hover table-striped table-condensed">
             <caption>{name} ({path})</caption>
             <thead>
-                <th>Nom</th>
-                <th>Date de création</th>
-                <th>Date de modification</th>
-                <th>Taille</th>
-                <th>Etat</th>
+                <tr>
+                    <th>Nom</th>
+                    <th>Date de création</th>
+                    <th>Date de modification</th>
+                    <th>Taille</th>
+                    <th>Etat</th>
+                </tr>
             </thead>
             <tbody>
                 {folders.map(folder => (
@@ -35,8 +37,8 @@ const TableApp = ({ path, name, folders, files }) => {
 TableApp.propTypes = {
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    folders: PropTypes.object.isRequired,
-    files: PropTypes.object.isRequired,
+    folders: PropTypes.array.isRequired,
+    files: PropTypes.array.isRequired,
 }
 
 export default TableApp

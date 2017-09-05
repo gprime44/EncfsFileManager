@@ -1,30 +1,45 @@
 import findIndex from 'lodash/findIndex'
-import { SET_ROOT, ADD_FOLDER } from './tree.action'
+import uniq from 'lodash/uniq'
+import { OPEN_FOLDER, CLOSE_FOLDER, ADD_FOLDER, REMOVE_FOLDER } from './tree.action'
 
-const nameInitialState = [{ path: '', name: '', expanded: false, folders: [], files: [] }]
+const nameInitialState = [{ path: '', name: '', opened: false, folders: [], files: [] }]
 const initAction = { type: 'UNKNOWN' }
 
 export default (state = nameInitialState, action = initAction) => {
   console.log(`ACTION : ${action.type}`)
+
   switch (action.type) {
-    case SET_ROOT: {
-      const idx = findIndex(state, ['path', ''])
-      if (idx === -1) return state
-      console.log(`Index found : ${idx}`)
-      const newState = [...state]
-      newState[idx] = { ...action.data, expanded: true }
-      console.log(newState)
-      return newState
-    }
-    case ADD_FOLDER: {
+    case OPEN_FOLDER: {
       const idx = findIndex(state, ['path', action.data.path])
       if (idx === -1) return state
+
       console.log(`Index found : ${idx}`)
+
+      // Change folder state -> opened
       const newState = [...state]
-      newState[idx] = { ...action.data, expanded: true }
-      console.log(newState)
+      newState[idx] = { ...action.data, opened: true }
+
       return newState
     }
+    case CLOSE_FOLDER: {
+      const idx = findIndex(state, ['path', action.data.path])
+      if (idx === -1) return state
+
+      console.log(`Index found : ${idx}`)
+
+      // Change folder state -> closed
+      const newState = [...state]
+      newState[idx] = { ...action.data, opened: false }
+
+      // Delete children
+      action.data.folders.forEach(folderToDelete =>
+        newState.filter(folder => folder.path !== folderToDelete.path))
+
+      return newState
+    }
+    case ADD_FOLDER: return uniq([...state, action.data])
+    case REMOVE_FOLDER: return [...state].filter(folder => folder.path !== action.data.path)
+
     default:
       return state
   }

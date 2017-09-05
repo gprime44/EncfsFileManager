@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 const TableApp = ({ path, name, size, dateCreate, dateUpdate, state }) => {
   return (
     <tr>
-      <td>{name}</td>
+      <td><i className="fa fa-folder-o" aria-hidden="true" tite={path} />{name}</td>
       <td><Moment>{dateCreate}</Moment></td>
       <td><Moment>{dateUpdate}</Moment></td>
       <td>{size}</td>
