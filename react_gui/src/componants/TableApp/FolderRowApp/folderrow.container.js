@@ -1,16 +1,23 @@
 import { connect } from 'react-redux'
 import pick from 'lodash/pick'
 import component from './folderrow'
-import { getRow } from '../../../redux/table'
+import { getFolder } from '../../../redux/table'
+import { openSubFolder } from './folderrow.action'
 
 const mapStateToProps = (state, { path }) => {
-  console.log('mapStateToProps')
-  const row = getRow(state, path)
-  console.log(row)
+  const row = getFolder(state, path)
   const folderProps = pick(row, ['path', 'name', 'size', 'dateCreate', 'dateUpdate', 'state'])
   return {
     ...folderProps,
   }
 }
 
-export default connect(mapStateToProps, undefined)(component)
+const mapDispatchToProps = (dispatch, { path }) => {
+  return {
+    onFolderClick: () => {
+      dispatch(openSubFolder(path))
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(component)

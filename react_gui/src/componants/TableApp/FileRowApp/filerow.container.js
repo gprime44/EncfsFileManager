@@ -1,12 +1,10 @@
 import { connect } from 'react-redux'
 import pick from 'lodash/pick'
 import component from './filerow'
-import { getRow } from '../../../redux/table'
+import { getFile } from '../../../redux/table'
 
 const mapStateToProps = (state, { path }) => {
-  console.log('mapStateToProps')
-  const row = getRow(state, path)
-  console.log(row)
+  const row = getFile(state, path)
   const folderProps = pick(row, ['path', 'name', 'size', 'dateCreate', 'dateUpdate', 'state'])
   return {
     ...folderProps,

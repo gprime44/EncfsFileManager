@@ -6,7 +6,7 @@ const TableApp = ({ path, name, size, dateCreate, dateUpdate, state }) => {
   let icon = ''
   return (
     <tr>
-      <td><i className={icon} aria-hidden="true" tite={path} />{name}</td>
+      <td><i className={icon} aria-hidden="true" title={path} />{name}</td>
       <td><Moment>{dateCreate}</Moment></td>
       <td><Moment>{dateUpdate}</Moment></td>
       <td>{size}</td>

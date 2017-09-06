@@ -6,14 +6,10 @@ const nameInitialState = [{ path: '', name: '', opened: false, folders: [], file
 const initAction = { type: 'UNKNOWN' }
 
 export default (state = nameInitialState, action = initAction) => {
-  console.log(`ACTION : ${action.type}`)
-
   switch (action.type) {
     case OPEN_FOLDER: {
       const idx = findIndex(state, ['path', action.data.path])
       if (idx === -1) return state
-
-      console.log(`Index found : ${idx}`)
 
       // Change folder state -> opened
       const newState = [...state]
@@ -24,8 +20,6 @@ export default (state = nameInitialState, action = initAction) => {
     case CLOSE_FOLDER: {
       const idx = findIndex(state, ['path', action.data.path])
       if (idx === -1) return state
-
-      console.log(`Index found : ${idx}`)
 
       // Change folder state -> closed
       const newState = [...state]

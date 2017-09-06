@@ -2,10 +2,12 @@ import React from 'react'
 import Moment from 'react-moment'
 import PropTypes from 'prop-types'
 
-const TableApp = ({ path, name, size, dateCreate, dateUpdate, state }) => {
+const TableApp = ({ path, name, size, dateCreate, dateUpdate, state, onFolderClick }) => {
   return (
     <tr>
-      <td><i className="fa fa-folder-o" aria-hidden="true" tite={path} />{name}</td>
+      <td onClick={onFolderClick}>
+        <i className="fa fa-folder-o" aria-hidden="true" title={path} />{name}
+      </td>
       <td><Moment>{dateCreate}</Moment></td>
       <td><Moment>{dateUpdate}</Moment></td>
       <td>{size}</td>
@@ -21,6 +23,7 @@ TableApp.propTypes = {
   dateCreate: PropTypes.number.isRequired,
   dateUpdate: PropTypes.number.isRequired,
   state: PropTypes.string.isRequired,
+  onFolderClick: PropTypes.func.isRequired,
 }
 
 export default TableApp

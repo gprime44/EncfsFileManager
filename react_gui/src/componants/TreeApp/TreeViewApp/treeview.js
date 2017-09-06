@@ -8,9 +8,8 @@ const TreeViewApp = ({ path, name, folders, opened = false, onClick }) => {
   else icon = 'fa fa-folder-o'
 
   return (
-    <li onClick={onClick}>
-      <i className={icon} aria-hidden="true" />
-      <label title={path}>{name}</label>
+    <li>
+      <label onClick={onClick} title={path}><i className={icon} aria-hidden="true" />{name}</label>
       <ul>
         {folders.map(folder => (
           <SubTreeViewApp
