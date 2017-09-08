@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import loader from 'hoc-react-loader'
 import TreeViewApp from './TreeViewApp'
 
-const TreeApp = ({ path, name, folders, opened = false, onClick }) => {
+const TreeApp = ({ path, name, folders, opened = false }) => {
     let icon = ''
     if (opened) icon = 'fa fa-folder-open-o'
     else icon = 'fa fa-folder-o'
@@ -11,7 +12,9 @@ const TreeApp = ({ path, name, folders, opened = false, onClick }) => {
         <div>
             <ul>
                 <li >
-                    <label onClick={onClick} title={path}><i className={icon} aria-hidden="true" />{name}</label>
+                    <label title={path}>
+                        <i className={icon} aria-hidden="true" />{name}
+                    </label>
                     <ul>
                         {folders.map(folder => (
                             <TreeViewApp
@@ -30,8 +33,7 @@ TreeApp.propTypes = {
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     folders: PropTypes.array.isRequired,
-    opened: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
+    opened: PropTypes.bool,
 }
 
-export default TreeApp
+export default loader()(TreeApp)

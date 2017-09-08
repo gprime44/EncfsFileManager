@@ -8,15 +8,14 @@ const mapStateToProps = (state) => {
   const rootFolder = getByPath(state, '')
   const folderProps = pick(rootFolder, ['path', 'name', 'folders', 'opened'])
   return {
+    loaded: folderProps.opened,
     ...folderProps,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClick: () => {
-      dispatch(processRoot())
-    },
+    load: () => dispatch(processRoot()),
   }
 }
 

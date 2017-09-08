@@ -28,7 +28,7 @@ TreeViewApp.propTypes = {
   path: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   folders: PropTypes.array.isRequired,
-  opened: PropTypes.bool.isRequired,
+  opened: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
 }
 
