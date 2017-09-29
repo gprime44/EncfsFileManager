@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import loader from 'hoc-react-loader'
 import TreeViewApp from './TreeViewApp'
+import styles from './tree.style.scss'
 
 const TreeApp = ({ path, name, folders, opened = false }) => {
     let icon = ''
@@ -9,22 +10,18 @@ const TreeApp = ({ path, name, folders, opened = false }) => {
     else icon = 'fa fa-folder-o'
 
     return (
-        <div>
-            <ul>
-                <li >
-                    <label title={path}>
-                        <i className={icon} aria-hidden="true" />{name}
-                    </label>
-                    <ul>
-                        {folders.map(folder => (
-                            <TreeViewApp
-                                key={folder.path}
-                                path={folder.path}
-                            />
-                        ))}
-                    </ul>
-                </li>
-            </ul>
+        <div className={styles.tree}>
+            <div className={styles.treeItem}>
+                <label title={path}>
+                    <i className={icon} aria-hidden="true" />{name}
+                </label>
+                {folders.map(folder => (
+                    <TreeViewApp
+                        key={folder.path}
+                        path={folder.path}
+                    />
+                ))}
+            </div>
         </div >
     )
 }

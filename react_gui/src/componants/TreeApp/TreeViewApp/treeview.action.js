@@ -4,6 +4,7 @@ import { displayFolder } from '../../../redux/table'
 export const processFolder = path => (dispatch, getState) => {
   const folderToProcess = getByPath(getState(), path)
   if (folderToProcess.opened) {
+    dispatch(displayFolder(folderToProcess))
     dispatch(closeFolder(folderToProcess))
   } else {
     fetch(`/api/content?path=${path}&withFile=true`)
